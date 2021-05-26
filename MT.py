@@ -1,3 +1,11 @@
+from numpy import mean
+from numpy import std
+from numpy import correlate
+from numpy.random import randn
+from numpy.random import seed
+from matplotlib import pyplot
+import unittest
+
 Q={'q0', 'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','q21','q22','q23', 'q24','q25'}
 S={'0', '1'}
 G={'0','1', 'X', 'Y', 'A', 'B', '.',' '}
@@ -83,7 +91,7 @@ D={
 }
 MT = (Q, S, G, D, 'q0',' ', F)
 
-palavra = '000011'
+palavra = '00000111'
 
 def analisaPalavra(maquina, palavra):
     estados_finais = maquina[6]
@@ -120,13 +128,29 @@ def analisaPalavra(maquina, palavra):
                     direcao = 'esquerda'
                     i -= 1
                 if estado_atual != transicao[0]:
-                    print('Sai do estado ' + estado_atual + ' para o estado ' + transicao[0] + ' trocando o simbolo ' + simbolo_ant + ' pelo símbolo' + transicao[1] + ' em direção a ' + direcao)
-                    print('\nFita:', palavra_list, '\n')
+                    # print('Sai do estado ' + estado_atual + ' para o estado ' + transicao[0] + ' trocando o simbolo ' + simbolo_ant + ' pelo símbolo' + transicao[1] + ' em direção a ' + direcao)
+                    # print('\nFita:', palavra_list, '\n')
                     estado_atual = transicao[0]
                     break
                 elif estado_atual == transicao[0]:
-                    print('Permanece no ' + estado_atual + ' lê o simbolo ' + simbolo_ant + ' e anda em direção a ' + direcao)
-                    print('\nFita:', palavra_list, '\n')
+                    # print('Permanece no ' + estado_atual + ' lê o simbolo ' + simbolo_ant + ' e anda em direção a ' + direcao)
+                    # print('\nFita:', palavra_list, '\n')
                     break
 analisaPalavra(MT, palavra)
 
+#Palavras Aleatórias usadas no gráfico
+#01 011 001 0011 00111 00011 001111 000111 0011111 0001111 00011111 00000111 00001111 00011111 000000111 0000001111 0000011111 0000001111 0000000011 0000000001 0001111111
+ 
+data1 = [2, 3, 3, 4, 5, 6, 6, 7, 7, 8, 8, 8, 9, 10]
+data2 = [37, 96, 58, 198, 495, 1070, 1811, 2619, 9276, 70887, 21621, 74376, 70887, 1745562] 
+ 
+#Dispersão A - B
+#data1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#data2 = [37, 96, 177, 282, 411, 564, 741, 942, 1167, 1416] 
+#data2 = [37, 58, 83, 112, 145, 182, 223, 268, 317, 370] 
+ 
+pyplot.scatter(data1, data2)
+pyplot.title('Gráfico de Dispersão')
+pyplot.xlabel("Tempo de Execução")
+pyplot.xlabel("Tamanho da Palavra")
+pyplot.show()
