@@ -6,10 +6,10 @@ from numpy.random import seed
 from matplotlib import pyplot
 import unittest
 
-Q={'q0', 'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','q21','q22','q23', 'q24','q25'}
+Q={'q0', 'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','q21','q22','q23', 'q24','q25','q26','q27','q28','q29','q30','q31','q32', 'q33','q34', 'q35'}
 S={'0', '1'}
 G={'0','1', 'X', 'Y', 'A', 'B', '.',' '}
-F={'q12', '25'}
+F={'q12', 'q25', 'q29','q30', 'q33', 'q35'}
 D={
     ('q0', '1'):('q0','1','R'),
     ('q0', '0'):('q0','0','R'),
@@ -88,10 +88,29 @@ D={
     ('q22', ' '):('q24',' ','R'),
     ('q24', 'A'):('q24','0','R'),
     ('q24', '.'):('q25',' ','L'),
+    ('q26', '1'):('q27','1','R'),
+    ('q26', ' '):('q30','0','R'),
+    ('q26', '0'):('q31','0','R'),
+    ('q27', '1'):('q27','1','R'),
+    ('q27', ' '):('q28',' ','L'),
+    ('q27', '0'):('q35','0','R'),
+    ('q28', '1'):('q28',' ','L'),
+    ('q28', ' '):('q29',' ','R'),
+    ('q31', ' '):('q32',' ','L'),
+    ('q31', '1'):('q34','1','R'),
+    ('q31', '0'):('q31','0','R'),
+    ('q32', '0'):('q32',' ','L'),
+    ('q32', ' '):('q33','0','R'),
+    ('q34', '0'):('q35','0','R'),
+    ('q34', '1'):('q34','1','R'),
+    ('q34', ' '):('q36',' ','L'),
+    ('q36', '0'):('q36','0','L'),
+    ('q36', '1'):('q36','1','L'),
+    ('q36', ' '):('q0',' ','R'),
 }
-MT = (Q, S, G, D, 'q0',' ', F)
+MT = (Q, S, G, D, 'q26',' ', F)
 
-palavra = '00000111'
+palavra = '000000000000000'
 
 def analisaPalavra(maquina, palavra):
     estados_finais = maquina[6]
@@ -106,10 +125,14 @@ def analisaPalavra(maquina, palavra):
     print('Palavra: ', palavra,'\n')
 
     while palavra_completa == False:
-        if estado_atual == 'q12' or estado_atual =='q25':
-            palavra_completa = True
-            print('A palavra '+ palavra + ' foi aceita em ' + str(iteracoes) + ' iterações')
-            print('Palavra final: ' + palavra_final.join(palavra for palavra in palavra_list if palavra != ' '))
+        for estadof in estados_finais:
+            if estadof!= 'q35' and estado_atual == estadof:
+                palavra_completa = True
+                print('A palavra '+ palavra + ' foi aceita em ' + str(iteracoes) + ' iterações')
+                print('Palavra final: ' + palavra_final.join(palavra for palavra in palavra_list if palavra != ' '))
+            elif estadof == 'q35' and estado_atual == estadof:
+                palavra_completa = True
+                print('A palavra '+ palavra + ' foi rejeitada em ' + str(iteracoes) + ' iterações por não estar no formato 0^a1^b')
         for delta in maquina[3]:
             if (i + 1) > len(palavra_list):
                 palavra_list.append(' ') 
@@ -128,29 +151,29 @@ def analisaPalavra(maquina, palavra):
                     direcao = 'esquerda'
                     i -= 1
                 if estado_atual != transicao[0]:
-                    # print('Sai do estado ' + estado_atual + ' para o estado ' + transicao[0] + ' trocando o simbolo ' + simbolo_ant + ' pelo símbolo' + transicao[1] + ' em direção a ' + direcao)
-                    # print('\nFita:', palavra_list, '\n')
+                    print('Sai do estado ' + estado_atual + ' para o estado ' + transicao[0] + ' trocando o simbolo ' + simbolo_ant + ' pelo símbolo' + transicao[1] + ' em direção a ' + direcao)
+                    print('\nFita:', palavra_list, '\n')
                     estado_atual = transicao[0]
                     break
                 elif estado_atual == transicao[0]:
-                    # print('Permanece no ' + estado_atual + ' lê o simbolo ' + simbolo_ant + ' e anda em direção a ' + direcao)
-                    # print('\nFita:', palavra_list, '\n')
+                    print('Permanece no ' + estado_atual + ' lê o simbolo ' + simbolo_ant + ' e anda em direção a ' + direcao)
+                    print('\nFita:', palavra_list, '\n')
                     break
 analisaPalavra(MT, palavra)
 
 #Palavras Aleatórias usadas no gráfico
 #01 011 001 0011 00111 00011 001111 000111 0011111 0001111 00011111 00000111 00001111 00011111 000000111 0000001111 0000011111 0000001111 0000000011 0000000001 0001111111
  
-data1 = [2, 3, 3, 4, 5, 6, 6, 7, 7, 8, 8, 8, 9, 10]
-data2 = [37, 96, 58, 198, 495, 1070, 1811, 2619, 9276, 70887, 21621, 74376, 70887, 1745562] 
+# data1 = [2, 3, 3, 4, 5, 6, 6, 7, 7, 8, 8, 8, 9, 10]
+# data2 = [37, 96, 58, 198, 495, 1070, 1811, 2619, 9276, 70887, 21621, 74376, 70887, 1745562] 
  
 #Dispersão A - B
 #data1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 #data2 = [37, 96, 177, 282, 411, 564, 741, 942, 1167, 1416] 
 #data2 = [37, 58, 83, 112, 145, 182, 223, 268, 317, 370] 
  
-pyplot.scatter(data1, data2)
-pyplot.title('Gráfico de Dispersão')
-pyplot.xlabel("Tempo de Execução")
-pyplot.xlabel("Tamanho da Palavra")
-pyplot.show()
+# pyplot.scatter(data1, data2)
+# pyplot.title('Gráfico de Dispersão')
+# pyplot.xlabel("Tempo de Execução")
+# pyplot.xlabel("Tamanho da Palavra")
+# pyplot.show()
